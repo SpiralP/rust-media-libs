@@ -81,9 +81,10 @@ impl StreamMetadata {
                     None => (),
                 },
 
-                "videocodecid" => match value.get_string() {
-                    Some(x) => self.video_codec = Some(x),
-                    None => (),
+                "videocodecid" => match value {
+                    Amf0Value::Utf8String(x) => self.video_codec = Some(x),
+                    Amf0Value::Number(x) if x == 2.0 => self.video_codec = Some("h264".to_string()),
+                    _ => (),
                 },
 
                 "videodatarate" => match value.get_number() {
@@ -96,9 +97,10 @@ impl StreamMetadata {
                     None => (),
                 },
 
-                "audiocodecid" => match value.get_string() {
-                    Some(x) => self.audio_codec = Some(x),
-                    None => (),
+                "audiocodecid" => match value {
+                    Amf0Value::Utf8String(x) => self.audio_codec = Some(x),
+                    Amf0Value::Number(x) if x == 2.0 => self.audio_codec = Some("mp3".to_string()),
+                    _ => (),
                 },
 
                 "audiodatarate" => match value.get_number() {
